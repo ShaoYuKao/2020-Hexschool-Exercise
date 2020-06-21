@@ -28,3 +28,4 @@
 // 當判斷式接收到 sayYouLoveMe() 回傳 true 的結果時，則會運行接下來的陳述片段
 if (sayYouLoveMe()) { console.log('說你愛我') };
 ```
+-[Demo](https://shaoyukao.github.io/2020-Hexschool-Exercise/%E7%AC%AC%E4%B8%80%E9%80%B1/%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99/index.html)
