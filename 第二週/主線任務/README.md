@@ -81,4 +81,4 @@ A:
 
 如果是取得需要驗證的 API，需要記得在 Header 補上登入 Token。
 
--[Demo](https://shaoyukao.github.io/2020-Hexschool-Exercise/%E7%AC%AC%E4%B8%80%E9%80%B1/%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99/index.html)
+-[Demo](https://shaoyukao.github.io/2020-Hexschool-Exercise/%E7%AC%AC%E4%BA%8C%E9%80%B1/%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99/index.html)
