@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品列表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body style="padding: 10px;">
+
+    <!-- 麵包屑 (Breadcrumb) -->
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">首頁</li>
+                <li class="breadcrumb-item active" id="gotoProductList">
+                    <!-- <a href="javascript:void(0);">產品列表</a> -->
+                    產品列表
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+
+    <div class="container" id="productItem">
+        <div id="app" class="card-columns">
+        </div>
+    </div>
+
+    <!-- Frontend 前台 - Show product. 取得單一商品細節。 -->
+    <div class="container" id="productDetail" style="display:none">
+
+        <!-- 商品名稱 -->
+        <h2 id="productDetailTitle"></h2>
+        <!-- 商品分類 -->
+        <div class="form-group row">
+            <label for="category" class="col-sm-1 col-form-label font-weight-bold">分類</label>
+            <h4 class="col-sm-11" id='productDetailCategory'>
+            </h4>
+        </div>
+        <!-- 商品敘述 -->
+        <div class="form-group">
+            <label for="content" class="font-weight-bold">商品敘述</label>
+            <article id="productDetailContent" class="text-indent-2">
+            </article>
+        </div>
+        <!-- 商品說明 -->
+        <div class="form-group">
+            <label for="description" class="font-weight-bold">商品說明</label>
+            <article id="productDetailDescription" class="text-indent-2">
+            </article>
+        </div>
+        <!-- 商品價格 -->
+        <form>
+            <div class="form-row">
+                <div class="col">
+                    <div class="col-form-label">
+                        <p class="font-delete">
+                            原價 NT$
+                            <span id="productDetailOriginPrice"></span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-form-label">
+                        <h3 class="priceBlock">
+                            售價 NT$
+                            <span id="productDetailPrice"></span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
+
+        <hr>
+        <!-- 商品圖片 -->
+        <div class="form-row" id="productDetailImage">
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Loading -->
+        <div id="fountainG">
+            <div id="fountainG_1" class="fountainG"></div>
+            <div id="fountainG_2" class="fountainG"></div>
+            <div id="fountainG_3" class="fountainG"></div>
+            <div id="fountainG_4" class="fountainG"></div>
+            <div id="fountainG_5" class="fountainG"></div>
+            <div id="fountainG_6" class="fountainG"></div>
+            <div id="fountainG_7" class="fountainG"></div>
+            <div id="fountainG_8" class="fountainG"></div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
