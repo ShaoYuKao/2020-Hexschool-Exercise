@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Header Component -->
+        <header-component></header-component>
+
+        <!-- Content -->
+        <div class="container">
+            <div class="text-right mt-4">
+                <button class="btn btn-primary" @click="openModal('add', null)">
+                    建立新的產品
+                </button>
+            </div>
+            <!-- 清單 Component -->
+            <list-component 
+                :products-data="products"
+                @open-modal="(statu, item)=>openModal(statu, item)" />
+            </list-component>
+            <!-- 分頁 Component -->
+            <pagination-component
+                :pages="pagination"
+                @emit-pages="getProducts">
+            </pagination-component>
+        </div>
+
+        <!-- 新增或編輯產品 modal 元件 -->
+        <product-modal-component 
+            :user-uuid="user.uuid" 
+            :user-token="user.token" 
+            :modal-title="productModalTitle"
+            :is-new="isNew" 
+            @update="getProducts" 
+            v-on:loading-show="loadingShow"
+            ref="productModel">
+        </product-modal-component>
+
+        <!-- 刪除產品 modal 元件 -->
+        <del-product-modal-component 
+            :user-uuid="user.uuid" 
+            :user-token="user.token"
+            @update="getProducts" 
+            ref="delProductModel">
+        </del-product-modal-component>
+
+        <!-- loading 元件 -->
+        <loading-component v-if="isLoading"></loading-component>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+
+    <script>
+        Vue.component('header-component', httpVueLoader('./vue/components/HeaderComponent.vue'));
+        Vue.component('list-component', httpVueLoader('./vue/components/ListComponent.vue'));
+        Vue.component('loading-component', httpVueLoader('./vue/components/LoadingComponent.vue'));
+        Vue.component('product-modal-component', httpVueLoader('./vue/components/ProductModalComponent.vue'));
+        Vue.component('del-product-modal-component', httpVueLoader('./vue/components/DelProductModalComponent.vue'));
+        Vue.component('pagination-component', httpVueLoader('./vue/components/PaginationComponent.vue'));
+
+        let app = new Vue({
+            el: '#app',
+            components: {},
+            data: {
+                user: {
+                    token: '',
+                    uuid: '',
+                },
+                isNew: false,
+                products: [],
+                pagination: {},
+                productModalTitle: "",
+                isLoading: false
+            },
+            methods: {
+                // 取得所有商品列表資料
+                getProducts(page = 1) {
+                    this.loadingShow(true);
+
+                    const api = `https://course-ec-api.hexschool.io/api/${this.user.uuid}/admin/ec/products?page=${page}`;
+
+                    // 預設帶入 token
+                    axios.defaults.headers.common.Authorization = `Bearer ${this.user.token}`;
+
+                    axios.get(api).then((res) => {
+                        this.products = res.data.data;
+                        this.pagination = res.data.meta.pagination;
+                        this.loadingShow(false);
+                    }).catch((error) => {
+                        console.error(error);
+                        this.loadingShow(false);
+                    });
+                },
+                openModal(statu, item) {
+                    console.log("openModal", statu, item);
+                    switch (statu) {
+                        case 'add':
+                            this.isNew = true;
+                            this.productModalTitle = "新增產品";
+
+                            $('#productModal').modal({
+                                backdrop: 'static'
+                            }).modal('show');
+                            break;
+                        case 'edit':
+                            this.isNew = false;
+                            this.productModalTitle = "編輯產品";
+
+                            // 使用 refs 觸發子元件方法
+                            this.$refs.productModel.getProduct(item.id);
+
+                            this.loadingShow(true);
+                            break;
+                        case 'delete':
+                            // 使用 refs 觸發子元件方法
+                            this.$refs.delProductModel.setProduct(item);
+                            $('#delProductModal').modal('show');
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                loadingShow(status) {
+                    this.isLoading = status
+                }
+            },
+            created() {
+                // 取得 token 的 cookies
+                this.user.token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                this.user.uuid = document.cookie.replace(/(?:(?:^|.*;\s*)uuid\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+                // 若無法取得 token 則返回 Login 頁面
+                if (this.user.token === '') {
+                    window.location = 'login.html';
+                }
+
+                this.getProducts();
+            }
+        });
+    </script>
+</body>
+
+</html>
