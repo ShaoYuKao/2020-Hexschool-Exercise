@@ -29,10 +29,37 @@
         </li>
       </ul>
     </div>
-    <a href="javascript:void(0);">登出</a>
+    <a href="javascript:void(0);" @click="signOut">登出</a>
   </nav>
 </template>
 
 <script>
-module.exports = {};
+module.exports = {
+  props: ["user-token"],
+  methods: {
+    signOut() {
+      // const url = "https://course-ec-api.hexschool.io/api/auth/logout";
+
+      // let formData = {
+      //   "api_token": this.userToken
+      // };
+
+      // //預設帶入 token
+      // axios.defaults.headers.common.Authorization = `Bearer ${this.userToken}`;
+      // axios.post(url, formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //     "Accept": "application/json"
+      //   }
+      // }).then((res) => {
+      //   if (res.status === 200){
+      //     window.location = 'login.html';
+      //   }
+      // });
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "uuid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      window.location = 'login.html';
+    }
+  }
+};
 </script>
