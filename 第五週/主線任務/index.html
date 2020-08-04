@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品列表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css' />
+</head>
+
+<body>
+    <div id="app" class="pl-3 pr-3">
+        <!-- header -->
+        <header-component :products-cart-count="productsCartCount"></header-component>
+
+        <div class="row mt-2">
+            <div class="col-sm-2">
+                <!-- 商品分類列表 -->
+                <ul class="list-group mt-2">
+                    <li class="list-group-item" :class="(currentClass === classItem) && 'active'"
+                        style="cursor: pointer;"
+                        v-for="(classItem, key) in productClassList" :key="key" @click="classClickHandle(classItem)">
+                        {{classItem}}</li>
+                </ul>
+            </div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <!-- 商品列表 -->
+                    <div class="col-sm-3 mt-2 mb-2" v-for="(product, key) in showProductList" :key="product.id">
+                        <div class="card">
+                            <img :src="product.imageUrl[0]" class="card-img-top" :alt="product.title">
+                            <div class="card-body">
+                                <a class="h5" :href=`./product.html?pid=${product.id}` v-text="product.title"></a>
+                                <div>
+                                    <span class="card-link">
+                                        建議售價：$<del v-text="$options.filters.commaFormat(product.origin_price)"></del>
+                                    </span>
+                                    <span class="card-link">
+                                        網路價：<span class="h3 text-danger" v-text="$options.filters.commaFormat(product.price)"></span>
+                                    </span>
+                                </div>
+                                <div class="text-right mt-2">
+                                    <i 
+                                        class="fas fa-cart-plus fa-2x text-danger" 
+                                        style="cursor: pointer;"
+                                        @click="addCart(product.id)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Modal -->
+        <loading-component v-if="isLoading"></loading-component>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
