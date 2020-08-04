@@ -58,4 +58,4 @@ if (sayYouLoveMe()) { console.log('說你愛我') };
 ### 作業格式 & 常見 QA
 - 繳交作業格式教學（建議使用 GitHub Pages）：https://hackmd.io/@hexschool/HJDbvkFqU/%2FK6GUUl_pTRioN9ZpBCeqMQ
 
--[Demo](https://shaoyukao.github.io/2020-Hexschool-Exercise/%e7%ac%ac%e4%ba%94%e9%80%b1/%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99/login.html)
+-[Demo](https://shaoyukao.github.io/2020-Hexschool-Exercise/%e7%ac%ac%e4%ba%94%e9%80%b1/%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99/index.html)
